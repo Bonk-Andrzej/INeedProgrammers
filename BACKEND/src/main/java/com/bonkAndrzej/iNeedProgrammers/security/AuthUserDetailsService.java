@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Component
 @AllArgsConstructor
-public class CurrentUserDetailsService implements UserDetailsService {
+public class AuthUserDetailsService implements UserDetailsService {
 
     private final UserService userService;
 
@@ -22,6 +22,6 @@ public class CurrentUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
         User user = userService.findOneByUsername(email)
             .orElseThrow(() -> new UsernameNotFoundException("User " + email + " was not found in the database"));
-        return new CurrentUserDetails(user);
+        return new AuthUserDetails(user);
     }
 }

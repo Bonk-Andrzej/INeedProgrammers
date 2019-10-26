@@ -1,6 +1,6 @@
 package com.bonkAndrzej.iNeedProgrammers;
 
-import com.bonkAndrzej.iNeedProgrammers.util.config.AppProfile;
+import com.bonkAndrzej.iNeedProgrammers.util.AppProfile;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

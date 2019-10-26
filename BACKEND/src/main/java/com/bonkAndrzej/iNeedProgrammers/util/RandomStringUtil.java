@@ -5,11 +5,11 @@ import org.apache.commons.lang3.RandomStringUtils;
 /**
  * Utility class for generating random Strings.
  */
-public final class StringAppUtil {
+public final class RandomStringUtil {
 
     private static final int DEF_COUNT = 20;
 
-    private StringAppUtil() {
+    private RandomStringUtil() {
     }
 
     /**

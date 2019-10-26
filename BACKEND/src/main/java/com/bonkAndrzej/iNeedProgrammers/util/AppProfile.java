@@ -1,4 +1,4 @@
-package com.bonkAndrzej.iNeedProgrammers.util.config;
+package com.bonkAndrzej.iNeedProgrammers.util;
 
 public interface AppProfile {
     String PRODUCTION = "prod";

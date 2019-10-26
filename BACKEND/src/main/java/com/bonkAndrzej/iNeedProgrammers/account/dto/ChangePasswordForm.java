@@ -11,7 +11,6 @@ import javax.validation.constraints.Size;
 @Getter @Setter
 @ToString @EqualsAndHashCode
 @NoArgsConstructor
-
 public class ChangePasswordForm {
 
     @NotBlank @Size(min = 6, max = 100)

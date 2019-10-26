@@ -4,12 +4,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Resource not found")
-public class ResourceNotFoundException extends Exception {
+public class DataNotFoundException extends Exception {
 
-    public ResourceNotFoundException() {
+    public DataNotFoundException() {
     }
 
-    public ResourceNotFoundException(String message) {
+    public DataNotFoundException(String message) {
         super(message);
     }
 }

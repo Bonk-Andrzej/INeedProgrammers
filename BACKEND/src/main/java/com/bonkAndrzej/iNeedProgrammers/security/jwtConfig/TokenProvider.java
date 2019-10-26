@@ -1,10 +1,9 @@
-package com.bonkAndrzej.iNeedProgrammers.security.jwt;
+package com.bonkAndrzej.iNeedProgrammers.security.jwtConfig;
 
-import com.bonkAndrzej.iNeedProgrammers.util.config.CustomProperties;
+import com.bonkAndrzej.iNeedProgrammers.util.CustomProperties;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

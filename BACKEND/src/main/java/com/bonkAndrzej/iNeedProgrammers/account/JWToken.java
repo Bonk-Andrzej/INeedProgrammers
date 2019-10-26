@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Getter @Setter
 @AllArgsConstructor
-public class JWTToken {
+public class JWToken {
 
     @JsonProperty("id_token")
     private String idToken;

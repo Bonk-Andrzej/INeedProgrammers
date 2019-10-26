@@ -2,13 +2,14 @@ package com.bonkAndrzej.iNeedProgrammers.user;
 
 
 import com.bonkAndrzej.iNeedProgrammers.security.Auth;
-import com.bonkAndrzej.iNeedProgrammers.security.RolesConstants;
+import com.bonkAndrzej.iNeedProgrammers.user.exception.UserException;
+import com.bonkAndrzej.iNeedProgrammers.util.RolesConstants;
 import com.bonkAndrzej.iNeedProgrammers.user.dto.UserDto;
 import com.bonkAndrzej.iNeedProgrammers.user.dto.UserForm;
 import com.bonkAndrzej.iNeedProgrammers.user.role.RoleService;
 import com.bonkAndrzej.iNeedProgrammers.user.role.dto.RoleForm;
 import com.bonkAndrzej.iNeedProgrammers.util.error.CustomValidationException;
-import com.bonkAndrzej.iNeedProgrammers.util.error.ResourceNotFoundException;
+import com.bonkAndrzej.iNeedProgrammers.util.error.DataNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +24,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 /**
@@ -40,15 +40,13 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final Auth auth;
 
-    private enum Status {ACTIVE, INACTIVE}
-
     /**
      * Save a user.
      *
      * @param userForm the entity to save.
      * @return the persisted entity.
      */
-    public UserDto save(UserForm userForm) throws ResourceNotFoundException {
+    public UserDto save(UserForm userForm) throws UserException {
         User user = new User();
         User userAfterSave = userRepository.save(assignFieldsToUser(user, userForm));
 
@@ -75,20 +73,20 @@ public class UserService {
      * @return the entity.
      */
     @Transactional(readOnly = true)
-    public UserDto findOne(Long id) throws ResourceNotFoundException {
+    public UserDto findOne(Long id) throws UserException {
         User user = userRepository.findOneByIdWithEagerRelationships(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() -> new UserException("User not found"));
 
         return new UserDto(user);
     }
 
 
-    public UserDto update(Long id, UserForm userForm) throws ResourceNotFoundException, CustomValidationException {
+    public UserDto update(Long id, UserForm userForm) throws UserException {
         User user = userRepository.findOneByIdWithEagerRelationships(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() -> new UserException("User not found"));
 
         if (!userForm.getVersion().equals(user.getVersion()))
-            throw new CustomValidationException("OptimisticLockException - Bad entity version");
+            throw new UserException("OptimisticLockException - Bad entity version");
 
         validateRole(userForm.getRole());
 
@@ -103,36 +101,17 @@ public class UserService {
      *
      * @param id the id of the entity.
      */
-    public void delete(Long id, Integer userVersion) throws ResourceNotFoundException, CustomValidationException {
+    public void delete(Long id, Integer userVersion) throws UserException {
         User user = userRepository.findOneByIdWithEagerRelationships(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() -> new UserException("User not found"));
 
         if (!userVersion.equals(user.getVersion()))
-            throw new OptimisticLockException(user);
+            throw new UserException("OptimisticLockException - Bad entity version");
 
         if (userRepository.countByRoleName(RolesConstants.ADMIN) <= 1)
-            throw new CustomValidationException(
+            throw new UserException(
                     "Roles are invalid. Minimum one SUPER_ADMIN role in the application is required");
         userRepository.delete(user);
-    }
-
-    /**
-     * Change user status.
-     *
-     * @param id        {Long}   id
-     * @param newStatus {String} status
-     * @return {UserDto} userDto
-     */
-    public UserDto changeStatus(Long id, String newStatus) throws ResourceNotFoundException, CustomValidationException {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
-        if (Stream.of(Status.values()).noneMatch(status -> newStatus.equalsIgnoreCase(status.name())))
-            throw new CustomValidationException("User status is incorrect. Please check status name");
-
-//        user.setEnabled(newStatus.toUpperCase());
-        User userAfterChangeStatus = userRepository.save(user);
-        return new UserDto(userAfterChangeStatus);
     }
 
     /**
@@ -142,31 +121,49 @@ public class UserService {
      * @param roleForm {RoleForm} roleForm
      * @return {UserDto} userDto
      */
-    public UserDto addRoleToUser(Long userId, RoleForm roleForm) throws CustomValidationException, ResourceNotFoundException {
+    public UserDto changeUserRole(Long userId, RoleForm roleForm) throws UserException {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() -> new UserException("User not found"));
         String roleName = roleForm.getName();
         validateRole(roleName);
 
         user.setRole(roleService.getRoleByName(roleName)
-                .orElseThrow(() -> new ResourceNotFoundException("Role not found")));
+                .orElseThrow(() -> new UserException("Role not found")));
 
         User userAfterChangeRole = userRepository.save(user);
         return new UserDto(userAfterChangeRole);
     }
 
 
-    public void saveUser(User user) {
-        userRepository.save(user);
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+
+    public void removeUser(User user) {
+        userRepository.delete(user);
+        userRepository.flush();
+    }
+
+    public boolean removeNonActivatedUser(User existingUser) {
+        if (existingUser.isEnabled()) {
+            return false;
+        }
+        userRepository.delete(existingUser);
+        userRepository.flush();
+        return true;
+    }
+
+    public Optional<User> findOneByActivationKey(String activationKey) {
+        return userRepository.findOneByActivationKey(activationKey);
     }
 
     @Transactional(readOnly = true)
-    public Optional<User> getUserById(@NonNull Long id) {
+    public Optional<User> findOneById(@NonNull Long id) {
         return userRepository.findById(id);
     }
 
     @Transactional(readOnly = true)
-    public Optional<User> getUserByUsername(@NotBlank String email) {
+    public Optional<User> findOneByUsername(@NotBlank String email) {
         return userRepository.findOneByEmailWithEagerRelationships(email);
     }
 
@@ -186,30 +183,35 @@ public class UserService {
         return userRepository.getAllUsersPasswords();
     }
 
-    private void validateRole(String roleName) throws CustomValidationException {
+    @Transactional(readOnly = true)
+    public Optional<User> findOneByLogin(@NotBlank String login) {
+        return userRepository.findOneByLogin(login);
+    }
+
+
+    private void validateRole(String roleName) throws UserException {
         Set<String> currentUserRoles = auth.getCurrentUserRoles()
-                .orElseThrow(() -> new CustomValidationException("User haven't any role"));
+                .orElseThrow(() -> new UserException("User haven't any role"));
 
         if (!currentUserRoles.contains(RolesConstants.ADMIN) && !roleName.equalsIgnoreCase(RolesConstants.ADMIN))
-            throw new CustomValidationException("You haven't permission to grant this role.");
+            throw new UserException("You haven't permission to grant this role.");
 
         if (userRepository.countByRoleName(RolesConstants.ADMIN) == 1 &&
                 !roleName.equalsIgnoreCase(RolesConstants.ADMIN))
-            throw new CustomValidationException(
+            throw new UserException(
                     "Role is invalid. Minimum one ADMIN role in the application is required");
     }
 
 
-    private User assignFieldsToUser(User user, UserForm userForm) throws ResourceNotFoundException {
+    public User assignFieldsToUser(User user, UserForm userForm) throws UserException {
         user.setFirstName(userForm.getFirstName());
         user.setLastName(userForm.getLastName());
         user.setLogin(userForm.getLogin());
         user.setEmail(userForm.getEmail());
         user.setPassword(passwordEncoder.encode(userForm.getPassword()));
-        user.setEnabled(userForm.isEnabled());
 
         user.setRole(roleService.getRoleByName(userForm.getRole())
-                .orElseThrow(() -> new ResourceNotFoundException("Role not found")));
+                .orElseThrow(() -> new UserException("Role not found")));
 
         return user;
     }

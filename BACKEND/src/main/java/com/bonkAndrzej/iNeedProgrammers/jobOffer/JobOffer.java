@@ -1,76 +1,98 @@
-package com.bonkAndrzej.iNeedProgrammers.jobOrder;
+package com.bonkAndrzej.iNeedProgrammers.jobOffer;
 
 import com.bonkAndrzej.iNeedProgrammers.audit.config.AuditTableEntity;
+import com.bonkAndrzej.iNeedProgrammers.benefit.Benefit;
 import com.bonkAndrzej.iNeedProgrammers.category.Category;
+import com.bonkAndrzej.iNeedProgrammers.location.Location;
+import com.bonkAndrzej.iNeedProgrammers.seniority.Seniority;
 import com.bonkAndrzej.iNeedProgrammers.technology.Technology;
 import com.bonkAndrzej.iNeedProgrammers.user.User;
+import com.bonkAndrzej.iNeedProgrammers.util.UtilConstants;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.Future;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Positive;
+import java.util.Set;
 
 @Entity
-@SQLDelete(sql = "UPDATE user SET is_deleted = true WHERE id = ? AND version = ?")
+@SQLDelete(sql = "UPDATE job_offer SET is_deleted = true WHERE id = ? AND version = ?")
 @Where(clause = "is_deleted = false")
-@Table(name = "job_order", indexes = {
-        @Index(name = "ix_job_order_created_by", columnList = "created_by", unique = false),
-        @Index(name = "ix_job_order_last_modified_by", columnList = "last_modified_by", unique = false)})
+@Table(name = "job_offer", indexes = {
+        @Index(name = "ix_job_offer_created_by", columnList = "created_by", unique = false),
+        @Index(name = "ix_job_offer_last_modified_by", columnList = "last_modified_by", unique = false)})
 @Getter @Setter
-public class JobOrder extends AuditTableEntity {
+public class JobOffer extends AuditTableEntity {
 
-    @NotBlank
+    @NotBlank @Column(nullable = false)
     private String title;
-
-    @NotBlank
+    @NotBlank @Column(nullable = false)
     private String content;
+    @Email @Column(nullable = false)
+    private String email;
+    @Positive @Column(nullable = false)
+    private Long salary;
+    @Pattern(regexp = UtilConstants.phoneNumberRegex)
+    private String phoneNumber;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
-    private Date created;
 
-    private Date updated;
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.S")
-    @Future @NotNull
-    private Date end;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "employer_id", nullable = false)
     private User employer;
 
-    @ManyToOne
-    private User executor;
+    @ManyToMany(
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "job_offer_category",
+            joinColumns = @JoinColumn(name = "job_offer_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Set<Category> categories;
 
-    @ManyToMany
-    private List<Category> categories;
+    @ManyToMany(
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "job_offer_technology",
+            joinColumns = @JoinColumn(name = "job_offer_id"),
+            inverseJoinColumns = @JoinColumn(name = "technology_id"))
+    private Set<Technology> technologies;
 
-    @ManyToMany
-    private List<Technology> technologies;
+    @ManyToMany(
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "job_offer_seniority",
+            joinColumns = @JoinColumn(name = "job_offer_id"),
+            inverseJoinColumns = @JoinColumn(name = "seniority_id"))
+    private Set<Seniority> senioritySet;
 
-    public JobOrder() {
+    @ManyToMany(
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "job_offer_location",
+            joinColumns = @JoinColumn(name = "job_offer_id"),
+            inverseJoinColumns = @JoinColumn(name = "location_id"))
+    private Set<Location> locations;
+
+    @ManyToMany(
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "job_offer_benefit",
+            joinColumns = @JoinColumn(name = "job_offer_id"),
+            inverseJoinColumns = @JoinColumn(name = "benefit_id"))
+    private Set<Benefit> benefits;
+
+
+    public JobOffer() {
         initUuid();
     }
 
-    public int getHoursTillEnd() {
-        if (end != null) {
-            return (int) ((end.getTime() - Calendar.getInstance().getTime().getTime()) / (1000 * 60 * 60));
-        }
-        return 0;
-    }
-
-    public String getShortenContent() {
-        if (content.length() > 500) {
-            String text = content;
-            text = text.substring(0, 500) + " ...";
-            return text;
-        }
-        return content;
-    }
 }

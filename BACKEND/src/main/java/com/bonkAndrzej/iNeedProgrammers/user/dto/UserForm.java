@@ -23,7 +23,6 @@ public class UserForm {
     private String email;
     @NotBlank @Size(min = 6, max = 100)
     private String password;
-    private boolean isEnabled;
 
     @RolesValidator
     private String role;

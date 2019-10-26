@@ -1,4 +1,8 @@
-package com.bonkAndrzej.iNeedProgrammers.chat.domain;
+package com.bonkAndrzej.iNeedProgrammers.chat.domain.chatMessage;
 
-public interface ChatMessageRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> {
 }

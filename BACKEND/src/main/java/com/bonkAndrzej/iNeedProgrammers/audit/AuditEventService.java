@@ -1,6 +1,6 @@
 package com.bonkAndrzej.iNeedProgrammers.audit;
 
-import com.bonkAndrzej.iNeedProgrammers.util.error.ResourceNotFoundException;
+import com.bonkAndrzej.iNeedProgrammers.util.error.DataNotFoundException;
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,10 +40,10 @@ public class AuditEventService {
             .map(auditEventConverter::convertToAuditEvent);
     }
 
-    public AuditEvent find(Long id) throws ResourceNotFoundException {
+    public AuditEvent find(Long id) throws DataNotFoundException {
         return Optional.of(persistenceAuditEventRepository.findById(id))
             .filter(Optional::isPresent)
             .map(Optional::get)
-            .map(auditEventConverter::convertToAuditEvent).orElseThrow(ResourceNotFoundException::new);
+            .map(auditEventConverter::convertToAuditEvent).orElseThrow(DataNotFoundException::new);
     }
 }

@@ -11,12 +11,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 @ToString
-public class CurrentUserDetails implements UserDetails {
+public class AuthUserDetails implements UserDetails {
 
     private final User user;
     private final Set<GrantedAuthority> rolesAuthority = new HashSet<>();
 
-    public CurrentUserDetails(User user) {
+    public AuthUserDetails(User user) {
         this.user = user;
         rolesAuthority.add(new SimpleGrantedAuthority(user.getRole().getName()));
     }

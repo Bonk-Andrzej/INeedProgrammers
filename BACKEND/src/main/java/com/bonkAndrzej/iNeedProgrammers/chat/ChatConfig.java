@@ -1,4 +1,4 @@
-package com.bonkAndrzej.iNeedProgrammers.chat.domain;
+package com.bonkAndrzej.iNeedProgrammers.chat;
 
 public class ChatConfig {
 }

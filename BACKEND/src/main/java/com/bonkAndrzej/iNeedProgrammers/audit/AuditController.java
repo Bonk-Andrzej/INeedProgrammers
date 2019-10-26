@@ -1,6 +1,6 @@
 package com.bonkAndrzej.iNeedProgrammers.audit;
 
-import com.bonkAndrzej.iNeedProgrammers.util.error.ResourceNotFoundException;
+import com.bonkAndrzej.iNeedProgrammers.util.error.DataNotFoundException;
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -79,7 +79,7 @@ public class AuditController {
         try {
             AuditEvent auditEvent = auditEventService.find(id);
             return new ResponseEntity<>(auditEvent, HttpStatus.OK);
-        } catch (ResourceNotFoundException e) {
+        } catch (DataNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

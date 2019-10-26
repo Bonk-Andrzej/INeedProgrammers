@@ -1,21 +1,18 @@
 package com.bonkAndrzej.iNeedProgrammers.security;
 
-import com.bonkAndrzej.iNeedProgrammers.security.jwt.JWTConfigurer;
-import com.bonkAndrzej.iNeedProgrammers.security.jwt.TokenProvider;
+import com.bonkAndrzej.iNeedProgrammers.security.jwtConfig.JWTConfigurer;
+import com.bonkAndrzej.iNeedProgrammers.security.jwtConfig.TokenProvider;
+import com.bonkAndrzej.iNeedProgrammers.util.RolesConstants;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
-import org.springframework.web.filter.CorsFilter;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)

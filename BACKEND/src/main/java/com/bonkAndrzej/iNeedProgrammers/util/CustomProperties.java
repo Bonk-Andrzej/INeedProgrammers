@@ -1,4 +1,4 @@
-package com.bonkAndrzej.iNeedProgrammers.util.config;
+package com.bonkAndrzej.iNeedProgrammers.util;
 
 import lombok.Getter;
 import lombok.Setter;

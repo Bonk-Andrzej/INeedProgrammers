@@ -1,4 +1,4 @@
-package com.bonkAndrzej.iNeedProgrammers.benefits;
+package com.bonkAndrzej.iNeedProgrammers.benefit;
 
 import com.bonkAndrzej.iNeedProgrammers.audit.config.AuditTableEntity;
 import lombok.Getter;

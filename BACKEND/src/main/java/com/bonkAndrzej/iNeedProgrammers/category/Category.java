@@ -1,17 +1,14 @@
 package com.bonkAndrzej.iNeedProgrammers.category;
 
 import com.bonkAndrzej.iNeedProgrammers.audit.config.AuditTableEntity;
+import com.bonkAndrzej.iNeedProgrammers.jobOffer.JobOffer;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Index;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 @Entity
 @SQLDelete(sql = "UPDATE category SET is_deleted = true WHERE id = ? AND version = ?")
@@ -23,15 +20,12 @@ import javax.validation.constraints.Size;
 public class Category extends AuditTableEntity {
 
     @NotBlank
-    @Size(max = 50)
-    @Column(length = 50, nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String name;
 
-    @Size(max = 100)
-    @Column(length = 100)
-    private String description;
 
     public Category() {
         initUuid();
     }
+
 }

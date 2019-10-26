@@ -6,13 +6,13 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.1.8.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
     <groupId>com.bonkAndrzej</groupId>
-    <artifactId>iNeedProgrammers!</artifactId>
+    <artifactId>iNeedProgrammers</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>iNeedProgrammers!</name>
-    <description>INeedProgrammers! Spring Boot App</description>
+    <description>INeedProgrammers Spring Boot App</description>
 
     <properties>
         <java.version>11</java.version>
@@ -54,7 +54,7 @@
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <!--        EMAIL-->
+        <!--EMAIL-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
@@ -65,7 +65,7 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
             <version>2.1.8.RELEASE</version>
         </dependency>
-        <!--        UTILS-->
+        <!--UTILS-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>

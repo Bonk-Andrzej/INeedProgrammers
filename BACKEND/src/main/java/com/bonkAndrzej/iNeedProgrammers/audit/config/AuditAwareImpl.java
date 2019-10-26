@@ -1,7 +1,7 @@
 package com.bonkAndrzej.iNeedProgrammers.audit.config;
 
 import com.bonkAndrzej.iNeedProgrammers.security.Auth;
-import com.bonkAndrzej.iNeedProgrammers.util.config.Constants;
+import com.bonkAndrzej.iNeedProgrammers.util.UtilConstants;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.AuditorAware;
 
@@ -15,6 +15,6 @@ public class AuditAwareImpl implements AuditorAware<String> {
     @Override
     public Optional<String> getCurrentAuditor() {
         return Optional.of(auth.getCurrentUserEmail()
-            .orElse(Constants.SYSTEM_ACCOUNT));
+            .orElse(UtilConstants.SYSTEM_ACCOUNT));
     }
 }

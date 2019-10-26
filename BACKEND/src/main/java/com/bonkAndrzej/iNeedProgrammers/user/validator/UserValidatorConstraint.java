@@ -7,12 +7,12 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 @AllArgsConstructor
-public class UserValidator implements ConstraintValidator<UserValidatorConstr, Long> {
+public class UserValidatorConstraint implements ConstraintValidator<UserValidator, Long> {
 
     private final UserService userService;
 
     @Override
-    public void initialize(UserValidatorConstr constraintAnnotation) {
+    public void initialize(UserValidator constraintAnnotation) {
     }
 
     @Override public boolean isValid(Long userId, ConstraintValidatorContext context) {

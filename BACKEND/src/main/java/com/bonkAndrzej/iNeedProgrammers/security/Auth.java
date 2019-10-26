@@ -1,5 +1,6 @@
 package com.bonkAndrzej.iNeedProgrammers.security;
 
+import com.bonkAndrzej.iNeedProgrammers.util.RolesConstants;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,7 +26,7 @@ public class Auth {
      * @return the currentUserDetails of the current user.
      */
 
-    public Optional<CurrentUserDetails> getCurrentUserDetails() {
+    public Optional<AuthUserDetails> getCurrentUserDetails() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null
@@ -35,7 +36,7 @@ public class Auth {
             return Optional.empty();
         }
 
-        return Optional.of((CurrentUserDetails) authentication.getPrincipal());
+        return Optional.of((AuthUserDetails) authentication.getPrincipal());
     }
 
     public Optional<Set<String>> getCurrentUserRoles() {

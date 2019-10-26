@@ -1,11 +1,11 @@
 package com.bonkAndrzej.iNeedProgrammers.util.seeder;
 
-import com.bonkAndrzej.iNeedProgrammers.security.RolesConstants;
+import com.bonkAndrzej.iNeedProgrammers.util.RolesConstants;
 import com.bonkAndrzej.iNeedProgrammers.user.User;
 import com.bonkAndrzej.iNeedProgrammers.user.UserRepository;
 import com.bonkAndrzej.iNeedProgrammers.user.role.Role;
 import com.bonkAndrzej.iNeedProgrammers.user.role.RoleRepository;
-import com.bonkAndrzej.iNeedProgrammers.util.config.AppProfile;
+import com.bonkAndrzej.iNeedProgrammers.util.AppProfile;
 import com.github.javafaker.Faker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;

@@ -9,8 +9,8 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = UserValidator.class)
-public @interface UserValidatorConstr {
+@Constraint(validatedBy = UserValidatorConstraint.class)
+public @interface UserValidator {
     String message() default "Wrong User ID";
 
     Class<?>[] groups() default {};

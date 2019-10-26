@@ -2,8 +2,9 @@ package com.bonkAndrzej.iNeedProgrammers.user.role;
 
 import com.bonkAndrzej.iNeedProgrammers.user.role.dto.RoleDto;
 import com.bonkAndrzej.iNeedProgrammers.user.role.dto.RoleForm;
+import com.bonkAndrzej.iNeedProgrammers.user.role.exception.RoleException;
 import com.bonkAndrzej.iNeedProgrammers.util.error.CustomValidationException;
-import com.bonkAndrzej.iNeedProgrammers.util.error.ResourceNotFoundException;
+import com.bonkAndrzej.iNeedProgrammers.util.error.DataNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,12 +37,12 @@ public class RoleService {
         return new RoleDto(roleAfterSave);
     }
 
-    public RoleDto update(RoleForm roleForm, Long id) throws ResourceNotFoundException, CustomValidationException {
+    public RoleDto update(RoleForm roleForm, Long id) throws RoleException {
         Role role = roleRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Role not found"));
+            .orElseThrow(() -> new RoleException("Role not found"));
 
         if (!roleForm.getVersion().equals(role.getVersion()))
-            throw new CustomValidationException("OptimisticLockException - Bad entity version");
+            throw new RoleException("OptimisticLockException - Bad entity version");
 
         Role roleAfterUpdate = roleRepository.saveAndFlush(assignFieldsToRole(role, roleForm));
         return new RoleDto(roleAfterUpdate);
@@ -66,9 +67,9 @@ public class RoleService {
      * @return the entity.
      */
     @Transactional(readOnly = true)
-    public RoleDto findOne(Long id) throws ResourceNotFoundException {
+    public RoleDto findOne(Long id) throws RoleException {
         Role role = roleRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Role not found"));
+            .orElseThrow(() -> new RoleException("Role not found"));
 
         return new RoleDto(role);
     }
@@ -78,12 +79,12 @@ public class RoleService {
      *
      * @param id the id of the entity.
      */
-    public void delete(Long id, Integer version) throws ResourceNotFoundException, CustomValidationException {
+    public void delete(Long id, Integer version) throws RoleException {
         Role role = roleRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Role not found"));
+            .orElseThrow(() -> new RoleException("Role not found"));
 
         if (!version.equals(role.getVersion()))
-            throw new CustomValidationException("OptimisticLockException - Bad entity version");
+            throw new RoleException("OptimisticLockException - Bad entity version");
 
         roleRepository.deleteById(id);
     }

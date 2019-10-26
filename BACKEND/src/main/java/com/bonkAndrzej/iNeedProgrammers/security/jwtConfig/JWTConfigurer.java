@@ -1,4 +1,4 @@
-package com.bonkAndrzej.iNeedProgrammers.security.jwt;
+package com.bonkAndrzej.iNeedProgrammers.security.jwtConfig;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;

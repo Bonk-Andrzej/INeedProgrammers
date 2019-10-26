@@ -19,14 +19,22 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Long countByRoleName(String roleName);
 
+
     Optional<User> findOneByResetPasswordKey(String resetKey);
 
-    @Query("select distinct user.password from User user")
-    Set<String> getAllUsersPasswords();
+
+    @Query("select user from User user " +
+                   "where user.activationKey =:activationKey")
+    Optional<User> findOneByActivationKey(@Param("activationKey") String activationKey);
+
+
+    @Query("select user from User user " +
+                   "where user.login =:login")
+    Optional<User> findOneByLogin(@Param("login") String login);
 
     @Query("select user from User user " +
                    "where user.email =:email")
-    Optional<User> findUserByEmail(@Param("email") String email);
+    Optional<User> findOneByEmail(@Param("email") String email);
 
     @Query("select user.email from User user " +
                    "where user.email =:email")
@@ -41,6 +49,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
                    "left join fetch user.role " +
                    "where user.id =:id")
     Optional<User> findOneByIdWithEagerRelationships(@Param("id") Long id);
+
+    @Query("select distinct user.password from User user")
+    Set<String> getAllUsersPasswords();
 
     @Query("select distinct user from User user " +
                    "left join fetch user.role")

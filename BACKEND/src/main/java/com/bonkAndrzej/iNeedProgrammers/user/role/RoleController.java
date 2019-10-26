@@ -3,9 +3,8 @@ package com.bonkAndrzej.iNeedProgrammers.user.role;
 
 import com.bonkAndrzej.iNeedProgrammers.user.role.dto.RoleDto;
 import com.bonkAndrzej.iNeedProgrammers.user.role.dto.RoleForm;
+import com.bonkAndrzej.iNeedProgrammers.user.role.exception.RoleException;
 import com.bonkAndrzej.iNeedProgrammers.user.role.roleAnnotation.Admin;
-import com.bonkAndrzej.iNeedProgrammers.util.error.CustomValidationException;
-import com.bonkAndrzej.iNeedProgrammers.util.error.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -54,7 +53,7 @@ public class RoleController {
     @Admin
     @PutMapping("/roles/{id}")
     public ResponseEntity<RoleDto> updateRole(@Valid @RequestBody RoleForm roleForm, @Positive @PathVariable Long id)
-            throws ResourceNotFoundException, CustomValidationException {
+            throws RoleException {
 
         RoleDto roleDto = roleService.update(roleForm, id);
         return new ResponseEntity<>(roleDto, HttpStatus.OK);
@@ -78,7 +77,7 @@ public class RoleController {
      * or with status {@code 404 (Not Found)} if the id is not valid.
      */
     @GetMapping("/roles/{id}")
-    public ResponseEntity<Role> getRole(@Positive @PathVariable Long id) throws ResourceNotFoundException {
+    public ResponseEntity<Role> getRole(@Positive @PathVariable Long id) throws RoleException {
 
         roleService.findOne(id);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -95,7 +94,7 @@ public class RoleController {
     @DeleteMapping("/roles/{id}")
     public ResponseEntity<Void> deleteRole(@Positive @PathVariable Long id,
                                            @PositiveOrZero @RequestParam Integer version)
-            throws ResourceNotFoundException, CustomValidationException {
+            throws RoleException {
 
         roleService.delete(id, version);
         return new ResponseEntity<>(HttpStatus.OK);

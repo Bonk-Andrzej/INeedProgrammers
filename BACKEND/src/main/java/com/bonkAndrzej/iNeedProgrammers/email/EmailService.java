@@ -27,8 +27,31 @@ public class EmailService {
 
     private static final String USER = "user";
     private static final String BASE_URL = "baseUrl";
+    private static final String BASE_URL_PATH = "http://127.0.0.1:8080";
+    private static final String EMAIL_FROM = "INeedProgrammers@localhost";
 
-    public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
+
+    public void sendActivationEmail(@NotNull User user) {
+        log.debug("Sending activation email to '{}'", user.getEmail());
+        sendEmailFromTemplate(user, "email/activationEmail", "email.activation.title", BASE_URL_PATH);
+    }
+
+    public void sendPasswordResetEMail(@NotNull User user) {
+        log.debug("Sending reset email to '{}'", user.getEmail());
+        sendEmailFromTemplate(user, "email/passwordResetEmail", "email.reset.title", BASE_URL_PATH);
+    }
+
+    private void sendEmailFromTemplate(User mailReceiver, String templateName, String titleKey, String baseUrl) {
+        Locale locale = Locale.forLanguageTag("en");
+        Context context = new Context(locale);
+        context.setVariable(USER, mailReceiver);
+        context.setVariable(BASE_URL, baseUrl);
+        String content = templateEngine.process(templateName, context);
+        String subject = messageSource.getMessage(titleKey, null, locale);
+        sendEmail(mailReceiver.getEmail(), subject, content, false, true);
+    }
+
+    private void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
         log.debug("Send email[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}",
                 isMultipart, isHtml, to, subject, content);
 
@@ -36,7 +59,7 @@ public class EmailService {
         try {
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, isMultipart, StandardCharsets.UTF_8.name());
             message.setTo(to);
-            message.setFrom("bonkandrzej09@gmail.com");
+            message.setFrom(EMAIL_FROM);
             message.setSubject(subject);
             message.setText(content, isHtml);
             javaMailSender.send(mimeMessage);
@@ -50,35 +73,5 @@ public class EmailService {
         }
     }
 
-    public void sendOrderListEmail(@NotNull User mailReceiver) {
-        Locale locale = Locale.forLanguageTag("en");
-        Context context = new Context(locale);
-        context.setVariable(USER, mailReceiver);
-//        context.setVariable("orderItemList", orderItemsDto);
-//        context.setVariable("shopOrder", shopOrder);
-        String content = templateEngine.process("email/orderListEmail", context);
-        String subject = messageSource.getMessage("email.order.list.notification", null, locale);
-        sendEmail(mailReceiver.getEmail(), subject, content, false, true);
-    }
 
-
-    public void sendPasswordResetEMail(@NotNull User mailReceiver) {
-        Locale locale = Locale.forLanguageTag("en");
-        Context context = new Context(locale);
-        context.setVariable(USER, mailReceiver);
-//        context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
-        String content = templateEngine.process("email/passwordResetEmail", context);
-        String subject = messageSource.getMessage("email.reset.title", null, locale);
-        sendEmail(mailReceiver.getEmail(), subject, content, false, true);
-    }
-
-    public void sendEmailFromTemplate(User mailReceiver, String templateName, String titleKey) {
-        Locale locale = Locale.forLanguageTag("en");
-        Context context = new Context(locale);
-        context.setVariable(USER, mailReceiver);
-//        context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
-        String content = templateEngine.process(templateName, context);
-        String subject = messageSource.getMessage(titleKey, null, locale);
-        sendEmail(mailReceiver.getEmail(), subject, content, false, true);
-    }
 }

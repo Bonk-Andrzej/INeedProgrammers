@@ -1,6 +1,7 @@
 target/
 !.mvn/wrapper/maven-wrapper.jar
 .directory
+.log
 
 ### STS ###
 .apt_generated
@@ -29,3 +30,25 @@ nbdist/
 /application.properties
 /storage
 /license.dev
+
+### misc ###
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+### System Files ###
+.DS_Store
+Thumbs.db
+
+### e2e ###
+/e2e/*.js
+/e2e/*.map
+
+### dependencies ###
+/node_modules
+!/FRONTEND/package-lock.json
