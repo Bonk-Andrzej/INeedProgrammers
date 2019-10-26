@@ -1,13 +1,14 @@
 package com.bonkAndrzej.iNeedProgrammers.category;
 
 import com.bonkAndrzej.iNeedProgrammers.audit.config.AuditTableEntity;
-import com.bonkAndrzej.iNeedProgrammers.jobOffer.JobOffer;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Index;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 @Entity
@@ -20,7 +21,7 @@ import javax.validation.constraints.NotBlank;
 public class Category extends AuditTableEntity {
 
     @NotBlank
-    @Column(nullable = false, unique = true)
+//    @Column(nullable = false, unique = true)
     private String name;
 
 

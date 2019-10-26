@@ -7,17 +7,13 @@ import com.bonkAndrzej.iNeedProgrammers.location.Location;
 import com.bonkAndrzej.iNeedProgrammers.seniority.Seniority;
 import com.bonkAndrzej.iNeedProgrammers.technology.Technology;
 import com.bonkAndrzej.iNeedProgrammers.user.User;
-import com.bonkAndrzej.iNeedProgrammers.util.UtilConstants;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Positive;
 import java.util.Set;
 
 @Entity
@@ -33,17 +29,26 @@ public class JobOffer extends AuditTableEntity {
     private String title;
     @NotBlank @Column(nullable = false)
     private String content;
-    @Email @Column(nullable = false)
+    //    @Email @Column(nullable = false)
     private String email;
-    @Positive @Column(nullable = false)
+    //    @Positive @Column(nullable = false)
     private Long salary;
-    @Pattern(regexp = UtilConstants.phoneNumberRegex)
+    //    @Pattern(regexp = UtilConstants.phoneNumberRegex)
     private String phoneNumber;
 
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "employer_id", nullable = false)
     private User employer;
+
+    @ManyToMany(
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "job_offer_benefit",
+            joinColumns = @JoinColumn(name = "job_offer_id"),
+            inverseJoinColumns = @JoinColumn(name = "benefit_id"))
+    private Set<Benefit> benefits;
 
     @ManyToMany(
             fetch = FetchType.LAZY,
@@ -58,10 +63,10 @@ public class JobOffer extends AuditTableEntity {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
-            name = "job_offer_technology",
+            name = "job_offer_location",
             joinColumns = @JoinColumn(name = "job_offer_id"),
-            inverseJoinColumns = @JoinColumn(name = "technology_id"))
-    private Set<Technology> technologies;
+            inverseJoinColumns = @JoinColumn(name = "location_id"))
+    private Set<Location> locations;
 
     @ManyToMany(
             fetch = FetchType.LAZY,
@@ -76,19 +81,10 @@ public class JobOffer extends AuditTableEntity {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
-            name = "job_offer_location",
+            name = "job_offer_technology",
             joinColumns = @JoinColumn(name = "job_offer_id"),
-            inverseJoinColumns = @JoinColumn(name = "location_id"))
-    private Set<Location> locations;
-
-    @ManyToMany(
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-            name = "job_offer_benefit",
-            joinColumns = @JoinColumn(name = "job_offer_id"),
-            inverseJoinColumns = @JoinColumn(name = "benefit_id"))
-    private Set<Benefit> benefits;
+            inverseJoinColumns = @JoinColumn(name = "technology_id"))
+    private Set<Technology> technologies;
 
 
     public JobOffer() {

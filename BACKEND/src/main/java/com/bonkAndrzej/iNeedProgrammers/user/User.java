@@ -43,6 +43,7 @@ public class User extends AuditTableEntity {
 
     @Column(name = "is_enabled", nullable = false)
     private boolean enabled = false;
+
     @Size(max = 20)
     @Column(name = "activation_key", length = 20)
     private String activationKey;

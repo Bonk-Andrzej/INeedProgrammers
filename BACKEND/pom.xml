@@ -11,7 +11,7 @@
     <groupId>com.bonkAndrzej</groupId>
     <artifactId>iNeedProgrammers</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>iNeedProgrammers!</name>
+    <name>iNeedProgrammers</name>
     <description>INeedProgrammers Spring Boot App</description>
 
     <properties>
@@ -110,6 +110,18 @@
             <artifactId>jjwt-jackson</artifactId>
             <version>0.10.7</version>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>5.1.9.RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.4.0-b180830.0359</version>
         </dependency>
     </dependencies>
 
