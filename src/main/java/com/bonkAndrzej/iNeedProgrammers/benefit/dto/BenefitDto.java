@@ -9,8 +9,10 @@ import lombok.*;
 public class BenefitDto {
 
     private String name;
+    private Integer version;
 
     public BenefitDto(Benefit benefit) {
         this.name = benefit.getName();
+        this.version = benefit.getVersion();
     }
 }
