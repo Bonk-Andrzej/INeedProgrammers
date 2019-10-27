@@ -10,9 +10,7 @@ import javax.validation.constraints.PositiveOrZero;
 @NoArgsConstructor
 public class BenefitForm {
 
-    @NotBlank
-    private String name;
-    @PositiveOrZero
-    private Integer version;
+    @NotBlank private String name;
+    @PositiveOrZero private Integer version;
 
 }

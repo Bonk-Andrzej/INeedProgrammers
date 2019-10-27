@@ -7,9 +7,12 @@ import lombok.*;
 @ToString @EqualsAndHashCode
 @NoArgsConstructor
 public class CategoryDto {
+
     private String name;
+    private Integer version;
 
     public CategoryDto(Category category) {
         this.name = category.getName();
+        this.version = category.getVersion();
     }
 }

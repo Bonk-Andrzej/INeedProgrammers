@@ -9,8 +9,10 @@ import lombok.*;
 public class TechnologyDto {
 
     private String name;
+    private Integer version;
 
     public TechnologyDto(Technology technology) {
         this.name = technology.getName();
+        this.version = technology.getVersion();
     }
 }

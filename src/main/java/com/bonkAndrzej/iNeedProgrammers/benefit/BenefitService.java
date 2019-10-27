@@ -30,7 +30,8 @@ public class BenefitService {
                 () -> new BenefitException("Benefit not found with given id " + id));
 
         if (!benefit.getVersion().equals(benefitForm.getVersion()))
-            throw new BenefitException("OptimisticLockException - wrong benefit version");
+            throw new BenefitException("OptimisticLockException - wrong category version " + benefitForm.getVersion() +
+                    "\nExpected " + benefit.getVersion());
 
         benefit.setName(benefitForm.getName());
         Benefit benefitAfterUpdate = benefitRepository.save(benefit);
@@ -46,7 +47,7 @@ public class BenefitService {
     }
 
     @Transactional(readOnly = true)
-    public List<BenefitDto> getAllBenefit() {
+    public List<BenefitDto> getAllBenefits() {
         List<Benefit> benefits = benefitRepository.findAll();
 
         return benefits.stream()
@@ -58,7 +59,8 @@ public class BenefitService {
                 () -> new BenefitException("Benefit not found with given id " + id));
 
         if (!benefit.getVersion().equals(version))
-            throw new BenefitException("OptimisticLockException - wrong benefit version");
+            throw new BenefitException("OptimisticLockException - wrong category version " + version +
+                    "\nExpected " + benefit.getVersion());
 
         benefitRepository.delete(benefit);
 

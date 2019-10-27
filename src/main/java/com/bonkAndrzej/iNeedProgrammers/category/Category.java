@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Index;
 import javax.persistence.Table;
@@ -21,7 +22,7 @@ import javax.validation.constraints.NotBlank;
 public class Category extends AuditTableEntity {
 
     @NotBlank
-//    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String name;
 
 

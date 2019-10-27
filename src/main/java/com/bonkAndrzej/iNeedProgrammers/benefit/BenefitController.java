@@ -42,7 +42,7 @@ public class BenefitController {
 
     @GetMapping("/benefits")
     public ResponseEntity<List<BenefitDto>> getAllBenefit() {
-        List<BenefitDto> benefitDtos = benefitService.getAllBenefit();
+        List<BenefitDto> benefitDtos = benefitService.getAllBenefits();
 
         return new ResponseEntity<>(benefitDtos, HttpStatus.OK);
     }
