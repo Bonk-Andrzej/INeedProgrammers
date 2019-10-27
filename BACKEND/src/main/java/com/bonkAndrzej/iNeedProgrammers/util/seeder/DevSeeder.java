@@ -32,6 +32,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Slf4j
 @Component @Profile(AppProfile.DEVELOPMENT)
@@ -175,7 +176,7 @@ public class DevSeeder {
         if (categoryRepository.count() < 10) {
             for (int i = 0; i < 10; i++) {
                 Category category = new Category();
-                category.setName(faker.hacker().abbreviation());
+                category.setName("Category " + i);
                 categoryRepository.save(category);
             }
         }
@@ -185,7 +186,7 @@ public class DevSeeder {
         if (locationRepository.count() < 10) {
             for (int i = 0; i < 10; i++) {
                 Location location = new Location();
-                location.setName(faker.address().cityName());
+                location.setName("Location " + i);
                 locationRepository.save(location);
             }
         }
@@ -202,12 +203,12 @@ public class DevSeeder {
     }
 
     private void seedTechnology() {
-        if (categoryRepository.count() < 10) {
+        if (technologyRepository.count() < 10) {
             log.info("seedTechnology seedTechnology");
             for (int i = 0; i < 10; i++) {
                 Technology technology = new Technology();
-                technology.setName(faker.rickAndMorty().character());
-                technologyRepository.save(technology);
+                technology.setName("Technology " + i);
+                technologyRepository.saveAndFlush(technology);
             }
         }
     }
@@ -220,15 +221,15 @@ public class DevSeeder {
             List<Location> locations = locationRepository.findAll();
             List<Seniority> seniorities = seniorityRepository.findAll();
             List<Technology> technologies = technologyRepository.findAll();
-            log.info("seedJobOffer seedJobOffer");
+            log.info("seedJobOffer technologies " + technologies);
             for (int i = 0; i < 10; i++) {
                 Random random = new Random();
 
                 JobOffer jobOffer = new JobOffer();
                 jobOffer.setTitle(faker.commerce().productName());
                 jobOffer.setContent(faker.chuckNorris().fact());
-                jobOffer.setEmail(faker.company().name().concat("@email.com"));
-                jobOffer.setSalary(random.nextLong());
+                jobOffer.setEmail(faker.name().lastName() + "@email.com");
+                jobOffer.setSalary(ThreadLocalRandom.current().nextLong(25000));
                 jobOffer.setPhoneNumber(faker.phoneNumber().phoneNumber());
 
                 jobOffer.setEmployer(users.get(random.nextInt(users.size())));
@@ -244,13 +245,13 @@ public class DevSeeder {
                     categorySet.add(categories.get(random.nextInt(categories.size())));
                     locationSet.add(locations.get(random.nextInt(locations.size())));
                     senioritySet.add(seniorities.get(random.nextInt(seniorities.size())));
-//                    technologySet.add(technologies.get(random.nextInt(technologies.size())));
+                    technologySet.add(technologies.get(random.nextInt(technologies.size())));
                 }
                 jobOffer.setBenefits(benefitSet);
                 jobOffer.setCategories(categorySet);
                 jobOffer.setLocations(locationSet);
                 jobOffer.setSenioritySet(senioritySet);
-//                jobOffer.setTechnologies(technologySet);
+                jobOffer.setTechnologies(technologySet);
 
                 jobOfferRepository.save(jobOffer);
             }

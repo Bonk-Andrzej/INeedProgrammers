@@ -13,7 +13,9 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 import java.util.Set;
 
 @Entity
@@ -29,11 +31,10 @@ public class JobOffer extends AuditTableEntity {
     private String title;
     @NotBlank @Column(nullable = false)
     private String content;
-    //    @Email @Column(nullable = false)
+    @Email @Column(nullable = false)
     private String email;
-    //    @Positive @Column(nullable = false)
+    @Positive @Column(nullable = false)
     private Long salary;
-    //    @Pattern(regexp = UtilConstants.phoneNumberRegex)
     private String phoneNumber;
 
 
