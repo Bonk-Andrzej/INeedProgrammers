@@ -1,5 +1,4 @@
 package com.bonkAndrzej.iNeedProgrammers.category.dto;
-
 import com.bonkAndrzej.iNeedProgrammers.category.Category;
 import lombok.*;
 
