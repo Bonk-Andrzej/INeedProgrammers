@@ -2,14 +2,12 @@ package com.bonkAndrzej.iNeedProgrammers.user;
 
 
 import com.bonkAndrzej.iNeedProgrammers.security.Auth;
-import com.bonkAndrzej.iNeedProgrammers.user.exception.UserException;
-import com.bonkAndrzej.iNeedProgrammers.util.RolesConstants;
 import com.bonkAndrzej.iNeedProgrammers.user.dto.UserDto;
 import com.bonkAndrzej.iNeedProgrammers.user.dto.UserForm;
+import com.bonkAndrzej.iNeedProgrammers.user.exception.UserException;
 import com.bonkAndrzej.iNeedProgrammers.user.role.RoleService;
 import com.bonkAndrzej.iNeedProgrammers.user.role.dto.RoleForm;
-import com.bonkAndrzej.iNeedProgrammers.util.error.CustomValidationException;
-import com.bonkAndrzej.iNeedProgrammers.util.error.DataNotFoundException;
+import com.bonkAndrzej.iNeedProgrammers.util.RolesConstants;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
-import javax.persistence.OptimisticLockException;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Optional;

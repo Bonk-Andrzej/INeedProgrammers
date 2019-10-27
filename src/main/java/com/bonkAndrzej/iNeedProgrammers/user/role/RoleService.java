@@ -3,8 +3,6 @@ package com.bonkAndrzej.iNeedProgrammers.user.role;
 import com.bonkAndrzej.iNeedProgrammers.user.role.dto.RoleDto;
 import com.bonkAndrzej.iNeedProgrammers.user.role.dto.RoleForm;
 import com.bonkAndrzej.iNeedProgrammers.user.role.exception.RoleException;
-import com.bonkAndrzej.iNeedProgrammers.util.error.CustomValidationException;
-import com.bonkAndrzej.iNeedProgrammers.util.error.DataNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
