@@ -25,7 +25,7 @@ public class TechnologyController {
     private final TechnologyService technologyService;
 
     @Admin
-    @PostMapping("/categories")
+    @PostMapping("/technologies")
     public ResponseEntity<TechnologyDto> createTechnology(@Valid @RequestBody TechnologyForm technologyForm) {
         TechnologyDto technologyDto = technologyService.createTechnology(technologyForm);
 
@@ -33,14 +33,14 @@ public class TechnologyController {
     }
 
 
-    @GetMapping("/categories/{id}")
+    @GetMapping("/technologies/{id}")
     public ResponseEntity<TechnologyDto> getTechnology(@Positive @PathVariable Long id) throws TechnologyException {
         TechnologyDto technologyDto = technologyService.getTechnology(id);
 
         return new ResponseEntity<>(technologyDto, HttpStatus.OK);
     }
 
-    @GetMapping("/categories")
+    @GetMapping("/technologies")
     public ResponseEntity<List<TechnologyDto>> getAllTechnologies() {
         List<TechnologyDto> technologyDtos = technologyService.getAllTechnologies();
 
@@ -48,7 +48,7 @@ public class TechnologyController {
     }
 
     @Admin
-    @PutMapping("/categories/{id}")
+    @PutMapping("/technologies/{id}")
     public ResponseEntity<TechnologyDto> updateTechnology(@Valid @RequestBody TechnologyForm technologyForm, @Positive @PathVariable Long id)
             throws TechnologyException {
         TechnologyDto technologyDto = technologyService.updateTechnology(technologyForm, id);
@@ -57,7 +57,7 @@ public class TechnologyController {
     }
 
     @Admin
-    @DeleteMapping("/categories/{id}")
+    @DeleteMapping("/technologies/{id}")
     public ResponseEntity<Void> deleteTechnology(@Positive @PathVariable Long id, @PositiveOrZero @RequestParam Integer version)
             throws TechnologyException {
         technologyService.deleteTechnology(id, version);

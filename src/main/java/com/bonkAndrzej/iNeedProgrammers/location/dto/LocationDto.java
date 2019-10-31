@@ -7,11 +7,14 @@ import lombok.*;
 @ToString @EqualsAndHashCode
 @NoArgsConstructor
 public class LocationDto {
-
+    private Long id;
+    private String uuid;
     private String name;
     private Integer version;
 
     public LocationDto(Location location) {
+        this.id = location.getId();
+        this.uuid = location.getUuid().toString();
         this.name = location.getName();
         this.version = location.getVersion();
     }

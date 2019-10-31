@@ -250,7 +250,7 @@ public class DevSeeder {
                 jobOffer.setBenefits(benefitSet);
                 jobOffer.setCategories(categorySet);
                 jobOffer.setLocations(locationSet);
-                jobOffer.setSenioritySet(senioritySet);
+                jobOffer.setSeniorities(senioritySet);
                 jobOffer.setTechnologies(technologySet);
 
                 jobOfferRepository.save(jobOffer);

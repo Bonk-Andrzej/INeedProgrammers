@@ -25,8 +25,9 @@ public class JobOfferForm {
     private String phoneNumber;
     private Long employerId;
     private Set<Long> categoriesIds;
+    private Set<Long> benefitsIds;
+    private Set<Long> locationsIds;
     private Set<Long> technologiesIds;
     private Set<Long> senioritySetIds;
-    private Set<Long> locationsIds;
-    private Set<Long> benefitsIds;
+
 }

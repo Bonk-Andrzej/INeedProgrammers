@@ -16,6 +16,8 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class JobOfferDto {
 
+    private Long id;
+    private String uuid;
     private String title;
     private String content;
     private String email;
@@ -31,6 +33,8 @@ public class JobOfferDto {
 
 
     public JobOfferDto(JobOffer jobOffer) {
+        this.id = jobOffer.getId();
+        this.uuid = jobOffer.getUuid().toString();
         this.title = jobOffer.getTitle();
         this.content = jobOffer.getContent();
         this.email = jobOffer.getEmail();
@@ -45,7 +49,7 @@ public class JobOfferDto {
         this.technologiesIds = jobOffer.getTechnologies().stream()
                 .map(Technology::getId).collect(Collectors.toSet());
 
-        this.senioritySetIds = jobOffer.getSenioritySet().stream()
+        this.senioritySetIds = jobOffer.getSeniorities().stream()
                 .map(Seniority::getId).collect(Collectors.toSet());
 
         this.locationsIds = jobOffer.getLocations().stream()

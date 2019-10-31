@@ -27,9 +27,9 @@ import java.util.Set;
 @Getter @Setter
 public class JobOffer extends AuditTableEntity {
 
-    @NotBlank @Column(nullable = false)
+    @NotBlank(message = "Empty title") @Column(nullable = false)
     private String title;
-    @NotBlank @Column(nullable = false)
+    @NotBlank(message = "Empty content") @Column(nullable = false)
     private String content;
     @Email @Column(nullable = false)
     private String email;
@@ -76,7 +76,7 @@ public class JobOffer extends AuditTableEntity {
             name = "job_offer_seniority",
             joinColumns = @JoinColumn(name = "job_offer_id"),
             inverseJoinColumns = @JoinColumn(name = "seniority_id"))
-    private Set<Seniority> senioritySet;
+    private Set<Seniority> seniorities;
 
     @ManyToMany(
             fetch = FetchType.LAZY,
