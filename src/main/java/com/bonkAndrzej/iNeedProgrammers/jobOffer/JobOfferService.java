@@ -7,7 +7,6 @@ import com.bonkAndrzej.iNeedProgrammers.category.CategoryService;
 import com.bonkAndrzej.iNeedProgrammers.jobOffer.dto.JobOfferDto;
 import com.bonkAndrzej.iNeedProgrammers.jobOffer.dto.JobOfferForm;
 import com.bonkAndrzej.iNeedProgrammers.jobOffer.exception.JobOfferException;
-import com.bonkAndrzej.iNeedProgrammers.jobOffer.exception.LambdaExceptionUtil;
 import com.bonkAndrzej.iNeedProgrammers.location.Location;
 import com.bonkAndrzej.iNeedProgrammers.location.LocationService;
 import com.bonkAndrzej.iNeedProgrammers.seniority.Seniority;
@@ -16,11 +15,13 @@ import com.bonkAndrzej.iNeedProgrammers.technology.Technology;
 import com.bonkAndrzej.iNeedProgrammers.technology.TechnologyService;
 import com.bonkAndrzej.iNeedProgrammers.user.User;
 import com.bonkAndrzej.iNeedProgrammers.user.UserService;
+import com.bonkAndrzej.iNeedProgrammers.util.LambdaExceptionUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -39,31 +40,72 @@ public class JobOfferService {
 
 
     public JobOfferDto createJobOffer(JobOfferForm jobOfferForm) throws JobOfferException {
-        log.info("jobOfferForm " + jobOfferForm);
+        JobOffer jobOfferAfterSave = jobOfferRepository.save(assignFieldsToJobOffer(new JobOffer(), jobOfferForm));
+        return new JobOfferDto(jobOfferAfterSave);
+    }
+
+    public JobOfferDto updateJobOffer(JobOfferForm jobOfferForm, Long id) throws JobOfferException {
+        JobOffer jobOffer = jobOfferRepository.findOneByIdWithEagerEagerRelationships(id)
+                .orElseThrow(() -> new JobOfferException("Job offer not found with given ID " + id));
+
+        if (!jobOffer.getVersion().equals(jobOfferForm.getVersion()))
+            throw new JobOfferException("OptimisticLockException - provided wrong job offer version " + jobOfferForm.getVersion() +
+                    "\nExpected " + jobOffer.getVersion());
+
+        JobOffer jobOfferAfterUpdate = jobOfferRepository.save(assignFieldsToJobOffer(jobOffer, jobOfferForm));
+
+        return new JobOfferDto(jobOfferAfterUpdate);
+    }
+
+
+    public JobOfferDto getJobOffer(Long id) throws JobOfferException {
+        JobOffer jobOffer = jobOfferRepository.findOneByIdWithEagerEagerRelationships(id)
+                .orElseThrow(() -> new JobOfferException("Job offer not found with given ID " + id));
+
+        return new JobOfferDto(jobOffer);
+    }
+
+    public List<JobOfferDto> getAllJobOffers() {
+        return jobOfferRepository.findAllWithEagerEagerRelationships()
+                .stream().map(JobOfferDto::new).collect(Collectors.toList());
+    }
+
+    public void delete(Long id, Integer version) throws JobOfferException {
+        JobOffer jobOffer = jobOfferRepository.findOneByIdWithEagerEagerRelationships(id)
+                .orElseThrow(() -> new JobOfferException("Job offer not found with given ID " + id));
+
+        if (!jobOffer.getVersion().equals(version))
+            throw new JobOfferException("OptimisticLockException - provided wrong job offer version " + version +
+                    "\nExpected " + jobOffer.getVersion());
+
+        jobOfferRepository.delete(jobOffer);
+    }
+
+
+    private JobOffer assignFieldsToJobOffer(JobOffer jobOffer, JobOfferForm jobOfferForm) throws JobOfferException {
         User employer = userService.findOneById(jobOfferForm.getEmployerId())
                 .orElseThrow(() -> new JobOfferException("Employer not found with given IDs " + jobOfferForm.getEmployerId()));
 
         Set<Benefit> benefits = jobOfferForm.getBenefitsIds().stream().map(LambdaExceptionUtil.rethrowFunction(id ->
-                benefitService.findById(id).orElseThrow(() -> new JobOfferException("Benefits not found with given IDs " + id))))
+                benefitService.findById(id).orElseThrow(() -> new JobOfferException("Benefits not found with given ID " + id))))
                 .collect(Collectors.toSet());
 
         Set<Category> categories = jobOfferForm.getCategoriesIds().stream().map(LambdaExceptionUtil.rethrowFunction(id ->
-                categoryService.findById(id).orElseThrow(() -> new JobOfferException("Category not found with given IDs " + id))))
+                categoryService.findById(id).orElseThrow(() -> new JobOfferException("Category not found with given ID " + id))))
                 .collect(Collectors.toSet());
 
-        Set<Location> locations = jobOfferForm.getCategoriesIds().stream().map(LambdaExceptionUtil.rethrowFunction(id ->
-                locationService.findById(id).orElseThrow(() -> new JobOfferException("Category not found with given IDs " + id))))
+        Set<Location> locations = jobOfferForm.getLocationsIds().stream().map(LambdaExceptionUtil.rethrowFunction(id ->
+                locationService.findById(id).orElseThrow(() -> new JobOfferException("Category not found with given ID " + id))))
                 .collect(Collectors.toSet());
 
-        Set<Seniority> seniorities = jobOfferForm.getCategoriesIds().stream().map(LambdaExceptionUtil.rethrowFunction(id ->
-                seniorityService.findById(id).orElseThrow(() -> new JobOfferException("Category not found with given IDs " + id))))
+        Set<Seniority> seniorities = jobOfferForm.getSenioritiesIds().stream().map(LambdaExceptionUtil.rethrowFunction(id ->
+                seniorityService.findById(id).orElseThrow(() -> new JobOfferException("Category not found with given ID " + id))))
                 .collect(Collectors.toSet());
 
-        Set<Technology> technologies = jobOfferForm.getCategoriesIds().stream().map(LambdaExceptionUtil.rethrowFunction(id ->
-                technologyService.findById(id).orElseThrow(() -> new JobOfferException("Category not found with given IDs " + id))))
+        Set<Technology> technologies = jobOfferForm.getTechnologiesIds().stream().map(LambdaExceptionUtil.rethrowFunction(id ->
+                technologyService.findById(id).orElseThrow(() -> new JobOfferException("Category not found with given ID " + id))))
                 .collect(Collectors.toSet());
 
-        JobOffer jobOffer = new JobOffer();
         jobOffer.setTitle(jobOfferForm.getTitle());
         jobOffer.setContent(jobOfferForm.getContent());
         jobOffer.setEmail(jobOfferForm.getEmail());
@@ -75,10 +117,7 @@ public class JobOfferService {
         jobOffer.setLocations(locations);
         jobOffer.setSeniorities(seniorities);
         jobOffer.setTechnologies(technologies);
-
-        JobOffer jobOfferAfterSave = jobOfferRepository.save(jobOffer);
-        return new JobOfferDto(jobOfferAfterSave);
+        return jobOffer;
     }
-
 
 }

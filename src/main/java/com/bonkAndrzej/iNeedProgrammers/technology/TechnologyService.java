@@ -32,7 +32,7 @@ public class TechnologyService {
                 () -> new TechnologyException("Technology not found with given id " + id));
 
         if (!technology.getVersion().equals(technologyForm.getVersion()))
-            throw new TechnologyException("OptimisticLockException - wrong technology version " + technologyForm.getVersion() +
+            throw new TechnologyException("OptimisticLockException - provided wrong technology version " + technologyForm.getVersion() +
                     "\nExpected " + technology.getVersion());
 
         technology.setName(technologyForm.getName());
@@ -61,7 +61,7 @@ public class TechnologyService {
                 () -> new TechnologyException("Technology not found with given id " + id));
 
         if (!technology.getVersion().equals(version))
-            throw new TechnologyException("OptimisticLockException - wrong technology version " + version +
+            throw new TechnologyException("OptimisticLockException - provided wrong technology version " + version +
                     "\nExpected " + technology.getVersion());
 
         technologyRepository.delete(technology);

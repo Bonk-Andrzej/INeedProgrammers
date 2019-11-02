@@ -1,4 +1,4 @@
-package com.bonkAndrzej.iNeedProgrammers.jobOffer.exception;
+package com.bonkAndrzej.iNeedProgrammers.util;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;

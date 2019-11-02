@@ -32,7 +32,7 @@ public class CategoryService {
                 () -> new CategoryException("Category not found with given id " + id));
 
         if (!category.getVersion().equals(categoryForm.getVersion()))
-            throw new CategoryException("OptimisticLockException - wrong category version " + categoryForm.getVersion() +
+            throw new CategoryException("OptimisticLockException - provided wrong category version " + categoryForm.getVersion() +
                     "\nExpected " + category.getVersion());
 
         category.setName(categoryForm.getName());
@@ -61,7 +61,7 @@ public class CategoryService {
                 () -> new CategoryException("Category not found with given id " + id));
 
         if (!category.getVersion().equals(version))
-            throw new CategoryException("OptimisticLockException - wrong category version " + version +
+            throw new CategoryException("OptimisticLockException - provided wrong category version " + version +
                     "\nExpected " + category.getVersion());
 
         categoryRepository.delete(category);

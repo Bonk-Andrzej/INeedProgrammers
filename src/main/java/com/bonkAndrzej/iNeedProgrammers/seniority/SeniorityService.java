@@ -32,7 +32,7 @@ public class SeniorityService {
                 () -> new SeniorityException("Seniority not found with given id " + id));
 
         if (!seniority.getVersion().equals(seniorityForm.getVersion()))
-            throw new SeniorityException("OptimisticLockException - wrong seniority version " + seniorityForm.getVersion() +
+            throw new SeniorityException("OptimisticLockException - provided wrong seniority version " + seniorityForm.getVersion() +
                     "\nExpected " + seniority.getVersion());
 
         seniority.setName(seniorityForm.getName());
@@ -61,7 +61,7 @@ public class SeniorityService {
                 () -> new SeniorityException("Seniority not found with given id " + id));
 
         if (!seniority.getVersion().equals(version))
-            throw new SeniorityException("OptimisticLockException - wrong seniority version " + version +
+            throw new SeniorityException("OptimisticLockException - provided wrong seniority version " + version +
                     "\nExpected " + seniority.getVersion());
 
         seniorityRepository.delete(seniority);

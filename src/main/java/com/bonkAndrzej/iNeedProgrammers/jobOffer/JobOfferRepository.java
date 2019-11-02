@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface JobOfferRepository extends JpaRepository<JobOffer, Long> {
@@ -26,5 +27,5 @@ public interface JobOfferRepository extends JpaRepository<JobOffer, Long> {
             "left join fetch jobOffer.seniorities " +
             "left join fetch jobOffer.technologies " +
             "where jobOffer.id =:id")
-    List<JobOffer> findOneByIdWithEagerEagerRelationships(@Param("id") Long id);
+    Optional<JobOffer> findOneByIdWithEagerEagerRelationships(@Param("id") Long id);
 }

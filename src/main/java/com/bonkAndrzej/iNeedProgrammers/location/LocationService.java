@@ -32,7 +32,7 @@ public class LocationService {
                 () -> new LocationException("Location not found with given id " + id));
 
         if (!location.getVersion().equals(locationForm.getVersion()))
-            throw new LocationException("OptimisticLockException - wrong location version " + locationForm.getVersion() +
+            throw new LocationException("OptimisticLockException - provided wrong location version " + locationForm.getVersion() +
                     "\nExpected " + location.getVersion());
 
         location.setName(locationForm.getName());
@@ -61,7 +61,7 @@ public class LocationService {
                 () -> new LocationException("Location not found with given id " + id));
 
         if (!location.getVersion().equals(version))
-            throw new LocationException("OptimisticLockException - wrong location version " + version +
+            throw new LocationException("OptimisticLockException - provided wrong location version " + version +
                     "\nExpected " + location.getVersion());
 
         locationRepository.delete(location);
