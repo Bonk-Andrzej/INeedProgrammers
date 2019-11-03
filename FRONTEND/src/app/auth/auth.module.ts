@@ -6,7 +6,6 @@ import {PasswordResetComponent} from './password-reset/password-reset.component'
 import {AuthComponent} from "./auth.component";
 import {SignInComponent} from "./sign-in/sign-in.component";
 import {routes} from "./routes";
-import {AuthTestComponent} from './auth-test/auth-test.component';
 
 
 @NgModule({
@@ -14,10 +13,8 @@ import {AuthTestComponent} from './auth-test/auth-test.component';
     AuthComponent,
     SignInComponent,
     PasswordResetComponent,
-    AuthTestComponent
   ],
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  imports: [RouterModule.forChild(routes)]
 })
 export class AuthModule {
 }

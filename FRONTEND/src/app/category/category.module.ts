@@ -1,14 +1,20 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-
-import {CategoryRoutingModule} from './category-routing.module';
+import {CategoryIndexComponent} from "./category-index/category-index.component";
+import {CategoryEditComponent} from "./category-edit/category-edit.component";
+import {CategoryNewComponent} from "./category-new/category-new.component";
+import {CategoryComponent} from "./category.component";
+import {RouterModule} from "@angular/router";
+import {routes} from "./routes";
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    CategoryRoutingModule
-  ]
+  declarations: [
+    CategoryComponent,
+    CategoryIndexComponent,
+    CategoryEditComponent,
+    CategoryNewComponent,
+  ],
+  imports: [RouterModule.forChild(routes)]
+
 })
 export class CategoryModule {
 }
