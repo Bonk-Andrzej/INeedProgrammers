@@ -61,4 +61,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "left join fetch user.role ",
            countQuery = "select count(distinct user) from User user")
     Page<User> findAllWithEagerRelationships(Pageable pageable);
+
 }

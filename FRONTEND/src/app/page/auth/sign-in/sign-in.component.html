@@ -1,0 +1,39 @@
+<form [formGroup]="form"
+      (onSubmit)="signIn()"
+      [ngClass]="{ 'is-processing': isProcessing }"
+>
+  <mat-form-field class="w-full">
+    <input
+      matInput
+      [placeholder]="'Email' | translate"
+      formControlName="email"
+    />
+    <mat-error *ngIf="form.controls.email.hasError('required')">
+      {{ 'This field is required' | translate }}
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="w-full">
+    <input
+      type="password"
+      matInput
+      [placeholder]="'Password' | translate"
+      formControlName="password"
+    />
+    <mat-error *ngIf="form.controls.password.hasError('required')">
+      {{ 'This field is required' | translate }}
+    </mat-error>
+  </mat-form-field>
+  <div>
+    {{ 'LOGIN.privacy-policy-accepting' | translate }}
+  </div>
+  <div class="mt-6 flex items-center">
+    <button mat-flat-button color="primary">
+      {{ 'Sign in' | translate }}
+    </button>
+    <div class="ml-2">
+      <a mat-flat-button routerLink="/password-remind">
+        {{ 'Forgot Password?' | translate }}
+      </a>
+    </div>
+  </div>
+</form>

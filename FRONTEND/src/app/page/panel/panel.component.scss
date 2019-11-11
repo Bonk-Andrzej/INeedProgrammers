@@ -1,0 +1,63 @@
+//@import '~scss/functions';
+//@import '~scss/mixins';
+//@import '~scss/variables';
+
+/* Header
+-------------------------------------------------------------------------- */
+.sidenav-toggler {
+  display: flex;
+  align-items: center;
+  border: none;
+  background: none;
+
+  &__arrow {
+    margin: 0 5px 1px 0;
+  }
+}
+
+.ng-progress-bar {
+  opacity: 1 !important;
+  z-index: 0 !important;
+}
+
+.ng-bar-placeholder {
+  height: 5px !important;
+  background: #c5cae9;
+}
+
+/* Sidenav
+-------------------------------------------------------------------------- */
+.mat-drawer {
+  //width: $layout-sidebar-width;
+  //background: color(blue, dark);
+  color: #fff;
+
+  .mat-sidenav-list {
+    //padding: rem(10px 20px);
+
+    ul {
+      margin: 0;
+      //padding: rem(10px) 0;
+      list-style: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+      a {
+        //@include has-transition;
+        //margin: 0 rem(-20px);
+        //padding: 5px rem(40px);
+        display: block;
+        text-decoration: none;
+        color: inherit;
+
+        &:hover,
+        &.active {
+          background: color(blue);
+        }
+      }
+    }
+
+    &:last-child ul {
+      border-bottom: none;
+    }
+  }
+}

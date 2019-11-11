@@ -6,6 +6,7 @@ import {PasswordResetComponent} from './password-reset/password-reset.component'
 import {AuthComponent} from "./auth.component";
 import {SignInComponent} from "./sign-in/sign-in.component";
 import {routes} from "./routes";
+import {SharedModule} from "../../shared/shared.module";
 
 
 @NgModule({
@@ -14,7 +15,7 @@ import {routes} from "./routes";
     SignInComponent,
     PasswordResetComponent,
   ],
-  imports: [RouterModule.forChild(routes)]
+  imports: [RouterModule.forChild(routes), SharedModule]
 })
 export class AuthModule {
 }

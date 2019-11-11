@@ -1,0 +1,72 @@
+<article class="my-24">
+  <div class="row">
+    <div class="col-12 lg:col-10 lg:offset-2 ">
+      <div class="row">
+        <div class="col-12 sm:col-4 xl:col-3">
+          <div class="text-grey-dark" translate>
+            Bots
+          </div>
+          <hr class="mt-2 mb-4 border-0 border-b border-grey-dark opacity-25"/>
+          <mat-card class="cursor-pointer hover:shadow-md" routerLink="bots">
+            <div class="mb-4 flex items-center justify-between">
+              <h4 class="m-0 font-medium text-lg" translate>Bots</h4>
+              <img
+                src="assets/images/icon-bots.png"
+                [alt]="'Icon' | translate"
+              />
+            </div>
+            <mat-card-content class="text-grey-dark" translate>
+              Zarządzaj dostępnymi botami lub utwórz nowego bota.
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div class="mt-10 col-12 flex flex-col sm:mt-0 sm:col-8 xl:col-6">
+          <div>
+            <div class="text-grey-dark" translate>
+              Administration
+            </div>
+            <hr
+              class="mt-2 mb-4 flex-0 border-0 border-b border-grey-dark opacity-25"
+            />
+          </div>
+          <div class="row flex-grow">
+            <div class="col-12 sm:col">
+              <mat-card
+                class="flex flex-col min-h-full cursor-pointer hover:shadow-md"
+                routerLink="customers"
+              >
+                <div class="mb-4 flex items-center justify-between">
+                  <h4 class="m-0 font-medium text-lg" translate>Clients</h4>
+                  <img
+                    src="assets/images/icon-clients.png"
+                    [alt]="'Icon' | translate"
+                  />
+                </div>
+                <mat-card-content class="text-grey-dark" translate>
+                  Przeglądaj listę obecnych klientów.
+                </mat-card-content>
+              </mat-card>
+            </div>
+            <div class="mt-6 col-12 sm:mt-0 sm:col">
+              <mat-card
+                class="flex flex-col min-h-full cursor-pointer hover:shadow-md"
+                routerLink="users"
+              >
+                <div class="mb-4 flex items-center justify-between">
+                  <h4 class="m-0 font-medium text-lg" translate>Users</h4>
+                  <img
+                    src="assets/images/icon-users.png"
+                    [alt]="'Icon' | translate"
+                  />
+                </div>
+                <mat-card-content class="text-grey-dark" translate>
+                  Przeglądaj listę użytkowników.
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>

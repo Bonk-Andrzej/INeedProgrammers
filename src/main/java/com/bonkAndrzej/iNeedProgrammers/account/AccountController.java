@@ -28,10 +28,24 @@ import javax.validation.constraints.NotBlank;
 @RestController @Validated
 @AllArgsConstructor
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:4200")
 public class AccountController {
 
     private final AccountService accountService;
 
+
+    /**
+     * {@code GET  /account} : get the current user.
+     *
+     * @return the current user.
+     * @throws AccountException {@code 400 (Bad Request)} if the user couldn't be returned.
+     */
+    @GetMapping("/account")
+    public UserDto getAccount() throws AccountException {
+        return accountService.getUserWithAuthorities()
+                .map(UserDto::new)
+                .orElseThrow(() -> new AccountException("User could not be found"));
+    }
 
     /**
      * {@code POST  /register} : register the user.
@@ -42,7 +56,6 @@ public class AccountController {
      * @throws UserException    {@code 400 (Bad Request)} if is error with assign properties to user.
      */
     @PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<UserDto> registerAccount(@Valid @RequestBody UserForm userForm)
             throws AccountException, UserException {
 

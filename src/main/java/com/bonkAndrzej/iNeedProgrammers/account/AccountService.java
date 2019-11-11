@@ -8,6 +8,7 @@ import com.bonkAndrzej.iNeedProgrammers.security.Auth;
 import com.bonkAndrzej.iNeedProgrammers.security.AuthUserDetails;
 import com.bonkAndrzej.iNeedProgrammers.security.jwtConfig.TokenProvider;
 import com.bonkAndrzej.iNeedProgrammers.user.User;
+import com.bonkAndrzej.iNeedProgrammers.user.UserRepository;
 import com.bonkAndrzej.iNeedProgrammers.user.UserService;
 import com.bonkAndrzej.iNeedProgrammers.user.dto.LoginForm;
 import com.bonkAndrzej.iNeedProgrammers.user.dto.UserDto;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -34,11 +36,18 @@ import java.util.UUID;
 public class AccountService {
 
     private final Auth auth;
+    private final UserRepository userRepository;
     private final UserService userService;
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+
+
+    @Transactional(readOnly = true)
+    public Optional<User> getUserWithAuthorities() {
+        return auth.getCurrentUserEmail().flatMap(userRepository::findOneByEmailWithEagerRelationships);
+    }
 
     public UserDto registerUser(UserForm userForm) throws AccountException, UserException {
         checkUserForRegistration(userForm);

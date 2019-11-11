@@ -4,6 +4,7 @@ import com.bonkAndrzej.iNeedProgrammers.security.jwtConfig.JWTConfigurer;
 import com.bonkAndrzej.iNeedProgrammers.security.jwtConfig.TokenProvider;
 import com.bonkAndrzej.iNeedProgrammers.util.RolesConstants;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,14 +13,17 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
+import org.springframework.web.filter.CorsFilter;
 
+@Slf4j
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-//    private final CorsFilter corsFilter;
+    private final CorsFilter corsFilter;
     private final TokenProvider tokenProvider;
 
     @Bean
@@ -27,14 +31,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http
                 .csrf()
                 .disable()
-//                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
-//                .exceptionHandling()
-//                .and()
+                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling()
+                .and()
                 .headers()
                 .contentSecurityPolicy("default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:")
                 .and()
