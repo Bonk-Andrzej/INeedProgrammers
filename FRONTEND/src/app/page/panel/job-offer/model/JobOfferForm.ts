@@ -1,4 +1,4 @@
-export interface JobOfferDto {
+export interface JobOfferForm {
   id?: number;
   uuid?: string;
   title?: string;
